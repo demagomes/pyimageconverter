@@ -13,7 +13,7 @@ class Converter:
         except UnidentifiedImageError:
             response = "Cannot Identigy File Format: "+image
         except FileNotFoundError:
-            response = "File not found: "+ image
+            response = "File Not Found: "+ image
         except IsADirectoryError:
             response = "Cannot Convert a Directory: "+ image
         except OSError as e:

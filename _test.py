@@ -9,7 +9,10 @@ def getclassinstance():
 
 #NOTE - Tests convertion to webp
 def test_convertimage(getclassinstance):
+
     # converts the test jpeg image to webp
+    # the image is not included in the repo, change the first argument
+    # to a local image and add it to gitignore
     getclassinstance.convert('IMG_1723.jpeg','IMG_1723.webp')
 
     # asserts the new webpfile exists
@@ -22,7 +25,7 @@ def test_convertimage(getclassinstance):
 def test_missingfileerror(getclassinstance):
     # tries to convert an inexistent file
     response = getclassinstance.convert('IMG_1723.png','newfilename')
-    assert response == 'File not found: IMG_1723.png'
+    assert response == 'File Not Found: IMG_1723.png'
 
 
 #NOTE - Tests for error when file doesnt exist
