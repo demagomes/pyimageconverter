@@ -1,19 +1,23 @@
 import os
 import pytest
-# import classes.converter as cv
 from classes.converter import Converter
+from classes.utils import Utils
 
 @pytest.fixture
-def getclassinstance():
+def getconverterinstance():
     return Converter()
 
+@pytest.fixture
+def getutilsinstance():
+    return Utils()
+
 #NOTE - Tests convertion to webp
-def test_convertimage(getclassinstance):
+def test_convertimage(getconverterinstance):
 
     # converts the test jpeg image to webp
     # the image is not included in the repo, change the first argument
     # to a local image and add it to gitignore
-    getclassinstance.convert('IMG_1723.jpeg','IMG_1723.webp')
+    getconverterinstance.convert('IMG_1723.jpeg','IMG_1723.webp')
 
     # asserts the new webpfile exists
     assert os.path.exists("IMG_1723.webp") == True
@@ -22,14 +26,25 @@ def test_convertimage(getclassinstance):
     os.remove('IMG_1723.webp')
 
 #NOTE - Tests for error when file doesnt exist
-def test_missingfileerror(getclassinstance):
+def test_missingfileerror(getconverterinstance):
     # tries to convert an inexistent file
-    response = getclassinstance.convert('IMG_1723.png','newfilename')
+    response = getconverterinstance.convert('IMG_1723.png','newfilename')
     assert response == 'File Not Found: IMG_1723.png'
 
-
 #NOTE - Tests for error when file doesnt exist
-def test_foldererror(getclassinstance):
+def test_foldererror(getconverterinstance):
     # tries to convert a folder
-    response = getclassinstance.convert('classes','newfilename')
+    response = getconverterinstance.convert('classes','newfilename')
     assert response == 'Cannot Convert a Directory: classes'
+
+#NOTE - Tests the directory listing function() with string argument
+def test_folderlisting_str(getutilsinstance):
+    # with 1 jpeg test file in the root of the project
+    files = getutilsinstance.listdirectory('.jpeg')
+    assert len(files) == 1
+
+#NOTE - Tests the directory listing function() with string argument
+def test_folderlisting_list(getutilsinstance):
+    # with 1 jpeg test file in the root of the project
+    files = getutilsinstance.listdirectory(['.jpeg','.jpg'])
+    assert len(files) == 1
