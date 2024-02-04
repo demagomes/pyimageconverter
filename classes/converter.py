@@ -16,7 +16,7 @@ class Converter:
             response = "File Not Found: "+ image
         except IsADirectoryError:
             response = "Cannot Convert a Directory: "+ image
-        except OSError as e:
-            response = "An Error Occurred: " + image + " "+ e
+        except OSError as error:
+            response = "An Error Occurred: " + image + " "+ error
 
         return response
