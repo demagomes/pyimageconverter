@@ -11,8 +11,12 @@ class Converter:
             im = Image.open(image)
             im.save(newname)
         except UnidentifiedImageError:
-            response = "cannot identify image file "+image
-        except OSError:
-            response = "cannot convert image file "+image
+            response = "Cannot Identigy File Format: "+image
+        except FileNotFoundError:
+            response = "File not found: "+ image
+        except IsADirectoryError:
+            response = "Cannot Convert a Directory: "+ image
+        except OSError as e:
+            response = "An Error Occurred: " + image + " "+ e
 
         return response

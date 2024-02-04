@@ -17,3 +17,16 @@ def test_convertimage(getclassinstance):
 
     # delete the new file
     os.remove('IMG_1723.webp')
+
+#NOTE - Tests for error when file doesnt exist
+def test_missingfileerror(getclassinstance):
+    # tries to convert an inexistent file
+    response = getclassinstance.convert('IMG_1723.png','newfilename')
+    assert response == 'File not found: IMG_1723.png'
+
+
+#NOTE - Tests for error when file doesnt exist
+def test_foldererror(getclassinstance):
+    # tries to convert a folder
+    response = getclassinstance.convert('classes','newfilename')
+    assert response == 'Cannot Convert a Directory: classes'
