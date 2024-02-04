@@ -1,4 +1,5 @@
 #NOTE - Utils class to support the separation of concerns in other classes
+import os
 from classes.terminalcolours import TerminalColours as tc
 
 class Utils:
@@ -42,3 +43,21 @@ class Utils:
         # Print New Line on Complete
         if iteration == total: 
             print()
+
+    #NOTE - Directory listing function with param for file extention
+    def listdirectory(self,extention,dirpath = '.'):
+        # get the unfiltered directory list
+        unfiltered = os.listdir(path=dirpath)
+        files=[]
+
+        for file in unfiltered:
+            # test the argument type
+            if type(extention) is list:
+                for ex in extention:
+                    if file.endswith(ex):
+                        files.append(file)
+            else:
+                if file.endswith(extention):
+                    files.append(file)
+
+        return files
