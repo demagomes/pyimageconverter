@@ -11,6 +11,7 @@ from classes.converter import Converter
 # TODO - use the __main__ piece to avoid it being executed when testing
 # TODO - write unit tests to functions here
 # TODO - work on when no file is found, it is erroring at the moment.
+# TODO - Change notes for docstring comments!
 
 #NOTE - Defines the command line arguments for the script
 def setarguments():
