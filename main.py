@@ -26,21 +26,21 @@ def setarguments():
 args = setarguments()
 
 errors = []
-u = Utils()
-c = Converter()
-files = u.listdirectory(['.jpeg','.jpg'])
+utils = Utils()
+converter = Converter()
+files = utils.listdirectory(['.jpeg','.jpg'])
 l = len(files)
 
 # Initial call to print 0% progress
-u.printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+utils.printProgressBar(0, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
 for i,image in enumerate(files):
     name = image.split('.')[0]+".webp"
-    errors.append(c.convert(image,name)) 
-    u.printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
+    errors.append(converter.convert(image,name)) 
+    utils.printProgressBar(i + 1, l, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
 if errors != []:
-    u.cprint('Errors:','ERROR')
+    utils.cprint('Errors:','ERROR')
     for e in errors:
         if e != '':
             print(e)
