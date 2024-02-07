@@ -46,7 +46,7 @@ if __name__ == '__main__':
     utils.printProgressBar(0, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
     for i,image in enumerate(files):
-        name = Path(image).stem+".webp"
+        name = Path(image).stem+extensions.setextension(args.target)
         errors.append(converter.convert(image,name))
         utils.printProgressBar(i + 1, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
 

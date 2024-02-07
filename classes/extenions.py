@@ -21,4 +21,11 @@ class Extensions:
 
 
 
+    def setextension(self,ext):
+        if ext == 'JPEG':
+            return '.jpeg'
+        elif ext == 'WEBP':
+            return '.webp'
+        elif ext == 'PNG':
+            return '.png'
 
