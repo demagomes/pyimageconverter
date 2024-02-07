@@ -4,10 +4,12 @@ import os
 from classes.utils import Utils
 from classes.converter import Converter
 from classes.extenions import Extensions
+from pathlib import Path
 
 
 # DONE - define list of extensions based on argument passed
 # DONE - pass the list to listdirectory
+# TODO - work on file option for the script
 # TODO - make most of the script into functions
 # TODO - use the __main__ piece to avoid it being executed when testing
 # TODO - write unit tests to functions here
@@ -32,7 +34,10 @@ if __name__ == '__main__':
     converter = Converter()
     extensions = Extensions()
 
+    # set errors list for display after the process is finished
     errors = []
+
+    # pass the extensions list to the list folder function
     lookupext = extensions.getextensions(args.source)
     files = utils.listdirectory(lookupext)
     filecount = len(files)
@@ -41,7 +46,7 @@ if __name__ == '__main__':
     utils.printProgressBar(0, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
     for i,image in enumerate(files):
-        name = image.split('.')[0]+".webp"
+        name = Path(image).stem+".webp"
         errors.append(converter.convert(image,name))
         utils.printProgressBar(i + 1, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
