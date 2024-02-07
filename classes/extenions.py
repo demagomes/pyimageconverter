@@ -8,6 +8,14 @@ class Extensions:
     PNG=['.png','.PNG']
 
     def getextensions(self,ext):
+        '''gets and returns extension list for each extension enum
+
+        Args:
+            ext (str): string representing the file extenion
+
+        Returns:
+            list[str]: list extensions as strings
+        '''
         if ext == 'JPEG':
             return self.JPEG
         elif ext == 'WEBP':
@@ -22,6 +30,14 @@ class Extensions:
 
 
     def setextension(self,ext):
+        '''set file extension based on extension argument
+
+        Args:
+            ext (str): string representing the file extenion
+
+        Returns:
+            _type_: returns the extension to be used in the new filename
+        '''
         if ext == 'JPEG':
             return '.jpeg'
         elif ext == 'WEBP':
