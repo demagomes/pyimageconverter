@@ -1,10 +1,20 @@
-#NOTE - converter class using Pillow library
 
 from PIL import Image, UnidentifiedImageError
 
 class Converter:
-
+    """
+    Converter class containing all image convertion functions
+    """
     def convert(self,image,newname):
+        """_summary_
+
+        Args:
+            image (str): image name/path
+            newname (str): new image name with
+
+        Returns:
+            str: a string reponse, empty when sucess and error message when it fails
+        """
         response = ''
 
         try:

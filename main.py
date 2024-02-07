@@ -15,8 +15,13 @@ from pathlib import Path
 # DONE - work on when no file is found, it is erroring at the moment.
 # TODO - Change notes for docstring comments!
 
-#NOTE - Defines the command line arguments for the script
 def setarguments():
+    """
+    Defines the command line arguments for the script
+
+    Returns:
+        argparse.Namespace: list of defined command-line arguments
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("-d","--directory", help="Converts files in the filder defined: -d <Folder Path>",default='.')
     parser.add_argument("-f","--file", help="Converts the file defined: -f <File Path and Name>")
