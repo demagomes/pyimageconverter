@@ -6,15 +6,6 @@ from classes.converter import Converter
 from classes.extenions import Extensions
 from pathlib import Path
 
-
-# DONE - define list of extensions based on argument passed
-# DONE - pass the list to listdirectory
-# DONE - work on file option for the script
-# DONE - make most of the script into functions
-# DONE - use the __main__ piece to avoid it being executed when testing
-# DONE - work on when no file is found, it is erroring at the moment.
-# TODO - Change notes for docstring comments!
-
 def setarguments():
     '''
     Defines the command line arguments for the script
