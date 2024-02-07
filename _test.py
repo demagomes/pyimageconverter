@@ -25,7 +25,7 @@ def test_convertimage(getconverterinstance):
     getconverterinstance.convert('IMG_1723.jpeg','IMG_1723.webp')
 
     # asserts the new webpfile exists
-    assert os.path.exists("IMG_1723.webp") == True
+    assert os.path.exists('IMG_1723.webp') == True
 
     # delete the new file
     os.remove('IMG_1723.webp')

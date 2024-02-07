@@ -1,7 +1,7 @@
 class Extensions:
-    """
+    '''
     Extensions Class/Enum of file types.
-    """
+    '''
 
     JPEG=['.jpeg','.jpg','.JPEG','.JPG']
     WEBP=['.webp','.WEBP']

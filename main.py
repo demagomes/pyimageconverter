@@ -16,17 +16,17 @@ from pathlib import Path
 # TODO - Change notes for docstring comments!
 
 def setarguments():
-    """
+    '''
     Defines the command line arguments for the script
 
     Returns:
         argparse.Namespace: list of defined command-line arguments
-    """
+    '''
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d","--directory", help="Converts files in the filder defined: -d <Folder Path>",default='.')
-    parser.add_argument("-f","--file", help="Converts the file defined: -f <File Path and Name>")
-    parser.add_argument("-s","--source", help="Source File Type: -s JPEG", choices=['JPEG','PNG','WEBP'],default='JPEG')
-    parser.add_argument("-t","--target", help="Target File Type: -s WEBP", choices=['JPEG','PNG','WEBP'],default='WEBP')
+    parser.add_argument('-d','--directory', help='Converts files in the filder defined: -d <Folder Path>',default='.')
+    parser.add_argument('-f','--file', help='Converts the file defined: -f <File Path and Name>')
+    parser.add_argument('-s','--source', help='Source File Type: -s JPEG', choices=['JPEG','PNG','WEBP'],default='JPEG')
+    parser.add_argument('-t','--target', help='Target File Type: -s WEBP', choices=['JPEG','PNG','WEBP'],default='WEBP')
     return parser.parse_args()
 
 if __name__ == '__main__':

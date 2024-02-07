@@ -6,25 +6,25 @@ class Utils:
 
     def cprint(self, message, type, endchar='\n'):
         if type == 'HEADER':
-            print(f"{tc.HEADER}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.HEADER}{message}{tc.ENDC}',end=endchar)
         elif type == 'INFO':
-            print(f"{tc.INFO}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.INFO}{message}{tc.ENDC}',end=endchar)
         elif type == 'WARNING':
-            print(f"{tc.WARNING}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.WARNING}{message}{tc.ENDC}',end=endchar)
         elif type == 'ERROR':
-            print(f"{tc.ERROR}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.ERROR}{message}{tc.ENDC}',end=endchar)
         elif type == 'OKBLUE':
-            print(f"{tc.OKBLUE}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.OKBLUE}{message}{tc.ENDC}',end=endchar)
         elif type == 'OKCYAN':
-            print(f"{tc.OKCYAN}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.OKCYAN}{message}{tc.ENDC}',end=endchar)
         elif type == 'WHITE':
-            print(f"{tc.WHITE}{message}{tc.ENDC}",end=endchar)
+            print(f'{tc.WHITE}{message}{tc.ENDC}',end=endchar)
 
 
     #NOTE - Basic terminal progress bar. 
     # Source: https://stackoverflow.com/questions/3173320/text-progress-bar-in-terminal-with-block-characters
-    def printProgressBar (self,iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = "\r"):
-        """
+    def printProgressBar (self,iteration, total, prefix = '', suffix = '', decimals = 1, length = 100, fill = '█', printEnd = '\r'):
+        '''
         Call in a loop to create terminal progress bar
         @params:
             iteration   - Required  : current iteration (Int)
@@ -34,9 +34,9 @@ class Utils:
             decimals    - Optional  : positive number of decimals in percent complete (Int)
             length      - Optional  : character length of bar (Int)
             fill        - Optional  : bar fill character (Str)
-            printEnd    - Optional  : end character (e.g. "\r", "\r\n") (Str)
-        """
-        percent = ("{0:." + str(decimals) + "f}").format(100 * (iteration / float(total)))
+            printEnd    - Optional  : end character (e.g. '\r', '\r\n') (Str)
+        '''
+        percent = ('{0:.' + str(decimals) + 'f}').format(100 * (iteration / float(total)))
         filledLength = int(length * iteration // total)
         bar = fill * filledLength + '-' * (length - filledLength)
         self.cprint(f'\r{prefix} |{bar}| {percent}% {suffix}', 'INFO', printEnd)
