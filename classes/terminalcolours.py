@@ -1,6 +1,9 @@
 #NOTE - Terminal Colours Enum
 
 class TerminalColours:
+    '''
+    Terminal Colours Enum
+    '''
     HEADER = '\u001b[35;1m'
     INFO = '\033[92m'
     WARNING = '\033[93m'
