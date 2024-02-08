@@ -53,3 +53,7 @@ python3 main.py -f IMG_1802.jpeg -t PNG
 - Pillow
 - pytest
 
+## Next Steps
+- Work with more file formats available in the Pillow library
+- Some basic file manipulation like size and resolution as well as image enhancements
+- Create a UI for Mac and Windows
