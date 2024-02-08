@@ -1,5 +1,3 @@
-#NOTE - Terminal Colours Enum
-
 class TerminalColours:
     '''
     Terminal Colours Enum

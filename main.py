@@ -14,7 +14,7 @@ def setarguments():
         argparse.Namespace: list of defined command-line arguments
     '''
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d','--directory', help='Converts files in the filder defined: -d <Folder Path>',default='.')
+    parser.add_argument('-d','--directory', help='Converts files in the folder defined, its the default option with local folder ".": -d <Folder Path>',default='.')
     parser.add_argument('-f','--file', help='Converts the file defined: -f <File Path and Name>')
     parser.add_argument('-s','--source', help='Source File Type: -s JPEG', choices=['JPEG','PNG','WEBP'],default='JPEG')
     parser.add_argument('-t','--target', help='Target File Type: -s WEBP', choices=['JPEG','PNG','WEBP'],default='WEBP')
@@ -41,6 +41,10 @@ if __name__ == '__main__':
         files = utils.listdirectory(lookupext,args.directory)
     
     filecount = len(files)
+
+    # print header
+    utils.cprint('Python Image Converter','HEADER')
+    utils.cprint('https://github.com/demagomes/pyimageconverter','WHITE')
 
     if filecount == 0:
         errors.append('No Files Found')
