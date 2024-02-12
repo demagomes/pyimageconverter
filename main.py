@@ -1,10 +1,10 @@
 #NOTE - Main script to execute the basic file converter
 import argparse
-import os
 from classes.utils import Utils
 from classes.converter import Converter
 from classes.extenions import Extensions
 from pathlib import Path
+from ttkbootstrap import Style
 
 def setarguments():
     '''
