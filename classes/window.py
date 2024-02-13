@@ -6,12 +6,14 @@ from classes.converter import Converter
 from classes.utils import Utils
 from classes.extenions import Extensions
 
-#TODO - Update files when combo changes and there is a path set
+#DONE - Update files when combo changes and there is a path set
 #TODO - fix the ... buttons padding
 #TODO - Organise this class better, breackdown the functions further where possible and reuse code
-#TODO - Convert the files and update the target files
+#DONE - Convert the files and update the target files
 #TODO - learn how to unit test GUI if possible
 #TODO - make the path entries disabled for typing
+#TODO - dialogbox when finished with errors / or errors panel on may screen
+#TODO - convert button validation if all variables are set for it to work or dialogbox
 
 class Window(tk.Tk):
     sourcefiles = []
@@ -20,7 +22,7 @@ class Window(tk.Tk):
         super().__init__()
         self.labelfontsize = 14
         self.entryfontsize = 14
-        self.geometry("820x700")
+        self.geometry("820x725")
         self.resizable(False, False)
         self.title('Python Image Converter')
         self.iconbitmap('icon.ico')
@@ -68,7 +70,7 @@ class Window(tk.Tk):
         
 
         # Path entry
-        self.sourcefolder_entry = ttk.Entry(sourcefolder_labelframe,font=(None, self.entryfontsize))
+        self.sourcefolder_entry = ttk.Entry(sourcefolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.sourcefolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
         self.sourcefolder_button = ttk.Button(sourcefolder_labelframe, text="...",command=self.command_sourcefolderdialog)
         self.sourcefolder_button.grid(column=1,row=2,padx=0,pady=(5,10),ipady=2)
@@ -77,6 +79,7 @@ class Window(tk.Tk):
         self.sourcefilestextbox = scrolledtext.ScrolledText(
             master=sourcefolder_labelframe,
             highlightthickness=1
+
         )
         self.sourcefilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
         default_txt = "Source Folder Content"
@@ -95,7 +98,7 @@ class Window(tk.Tk):
         self.targetfiletype_combo.current(2)
         self.targetfiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
 
-        self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize))
+        self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
         self.targetfolder_button = ttk.Button(targetfolder_labelframe, text="...",command=self.command_targetfolderdialog)
         self.targetfolder_button.grid(column=1,row=2,padx=0,pady=(5,10),ipady=2)
@@ -112,8 +115,10 @@ class Window(tk.Tk):
     def command_sourcefolderdialog(self):
         d = filedialog.askdirectory(parent=self)
         if d:
+            self.sourcefolder_entry.config(state='enabled')
             self.sourcefolder_entry.delete(0, END)
             self.sourcefolder_entry.insert(0,d)
+            self.sourcefolder_entry.config(state='disabled')
 
             # get list of images from folder
             lookupext = self.extensions.getextensions(self.extoptions[self.sourcefiletype_combo.current()])
@@ -126,8 +131,10 @@ class Window(tk.Tk):
     def command_targetfolderdialog(self):
         d = filedialog.askdirectory(parent=self)
         if d:
+            self.targetfolder_entry.config(state='enabled')
             self.targetfolder_entry.delete(0, tk.END)
             self.targetfolder_entry.insert(0,d)
+            self.targetfolder_entry.config(state='disabled')
 
             # get list of images from folder
             lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
