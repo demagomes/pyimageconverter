@@ -157,12 +157,17 @@ class Window(tk.Tk):
 
     def command_convert(self):
         errors = []
+        self.pb['maximum'] = len(self.sourcefiles)
+        self.pb['value'] = 0
+        self.pb.update()
 
         for i,image in enumerate(self.sourcefiles):
                 imagepath = self.sourcefolder_entry.get() + '/' + image
                 newext = self.extoptions[self.targetfiletype_combo.current()]
                 name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
                 errors.append(self.converter.convert(imagepath,name))
+                self.pb['value'] = i+1
+                self.pb.update()
         
         if errors != []:
             self.utils.cprint('Errors:','ERROR')
@@ -170,7 +175,7 @@ class Window(tk.Tk):
                 if e != '':
                     print(e)
 
-        #FIXME - this whole section below is just for initial tests
+        #FIXME - This sessions needs to be better coded into functions as it appears 3 times in this class
         # get list of images from folder
         d = self.targetfolder_entry.get()
         lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
