@@ -76,8 +76,7 @@ class Window(tk.Tk):
             highlightthickness=1
         )
         self.sourcefilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
-        # .pack(fill=BOTH)
-        default_txt = "Source File Content"
+        default_txt = "Source Folder Content"
         self.sourcefilestextbox.insert(END, default_txt)
 
     def widget_targetfolder(self):
@@ -104,8 +103,7 @@ class Window(tk.Tk):
             highlightthickness=1
         )
         self.targetfilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
-        # .pack(fill=BOTH)
-        default_txt = "Source File Content"
+        default_txt = "Target Folder Content"
         self.targetfilestextbox.insert(END, default_txt)
         
     def command_sourcefolderdialog(self):
