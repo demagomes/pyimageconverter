@@ -1,3 +1,4 @@
+from pathlib import Path
 import tkinter as tk
 from tkinter import END, filedialog, scrolledtext, ttk
 from ttkbootstrap import Style
@@ -10,8 +11,10 @@ from classes.extenions import Extensions
 #TODO - Organise this class better, breackdown the functions further where possible and reuse code
 #TODO - Convert the files and update the target files
 #TODO - learn how to unit test GUI if possible
+#TODO - make the path entries disabled for typing
 
 class Window(tk.Tk):
+    sourcefiles = []
 
     def __init__(self):
         super().__init__()
@@ -47,7 +50,7 @@ class Window(tk.Tk):
 
     def widget_buttons(self):
         # Convert
-        convert_button = ttk.Button(self, text="Convert")
+        convert_button = ttk.Button(self, text="Convert",command=self.command_convert)
         convert_button.grid(column=1, row=7, sticky=tk.E,padx=10, pady=5, ipady=20, ipadx=20)
 
     def widget_sourcefolder(self):
@@ -114,9 +117,10 @@ class Window(tk.Tk):
 
             # get list of images from folder
             lookupext = self.extensions.getextensions(self.extoptions[self.sourcefiletype_combo.current()])
-            sourcefiles = self.utils.listdirectory(lookupext,d)
+            self.sourcefiles = self.utils.listdirectory(lookupext,d)
+
             self.sourcefilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
-            for f in sourcefiles:
+            for f in self.sourcefiles:
                 self.sourcefilestextbox.insert(END,f+'\n')
     
     def command_targetfolderdialog(self):
@@ -150,3 +154,27 @@ class Window(tk.Tk):
             value=0
         )
         self.pb.grid(column=1, row=1, sticky=tk.EW, padx=10, pady=(5, 10))
+
+    def command_convert(self):
+        errors = []
+
+        for i,image in enumerate(self.sourcefiles):
+                imagepath = self.sourcefolder_entry.get() + '/' + image
+                newext = self.extoptions[self.targetfiletype_combo.current()]
+                name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
+                errors.append(self.converter.convert(imagepath,name))
+        
+        if errors != []:
+            self.utils.cprint('Errors:','ERROR')
+            for e in errors:
+                if e != '':
+                    print(e)
+
+        #FIXME - this whole section below is just for initial tests
+        # get list of images from folder
+        d = self.targetfolder_entry.get()
+        lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
+        targetfiles = self.utils.listdirectory(lookupext,d)
+        self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        for f in targetfiles:
+            self.targetfilestextbox.insert(END,f+'\n')
