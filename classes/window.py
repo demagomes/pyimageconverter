@@ -14,7 +14,7 @@ from classes.extenions import Extensions
 #DONE - Convert the files and update the target files
 #TODO - learn how to unit test GUI if possible
 #DONE - make the path entries disabled for typing
-#TODO - dialogbox when finished with errors / or errors panel on may screen
+#DONE - dialogbox when finished with errors / or errors panel on may screen
 #DONE - convert button validation if all variables are set for it to work or dialogbox
 #TODO - add icons to buttons
 #TODO - fix comments
@@ -80,9 +80,10 @@ class Window(tk.Tk):
         sourcefolder_labelframe.columnconfigure(1, weight=1)
         
         # File type combobox
-        self.sourcefiletype_combo = ttk.Combobox(sourcefolder_labelframe,values=self.extoptions)
+        self.sourcefiletype_combo = ttk.Combobox(sourcefolder_labelframe,values=self.extoptions,state='readonly')
         self.sourcefiletype_combo.current(0)
         self.sourcefiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
+        self.sourcefiletype_combo.bind('<<ComboboxSelected>>',self.command_sourcetypecombochange)
         
 
         # Path entry
@@ -112,9 +113,10 @@ class Window(tk.Tk):
         targetfolder_labelframe.columnconfigure(1, weight=1)
 
         # File type combobox
-        self.targetfiletype_combo = ttk.Combobox(targetfolder_labelframe,values=self.extoptions)
+        self.targetfiletype_combo = ttk.Combobox(targetfolder_labelframe,values=self.extoptions,state='readonly')
         self.targetfiletype_combo.current(2)
         self.targetfiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
+        self.targetfiletype_combo.bind('<<ComboboxSelected>>',self.command_targettypecombochange)
 
         self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
@@ -142,7 +144,6 @@ class Window(tk.Tk):
 
             # get list of images from folder
             self.subcommand_updatesourcefolder()
-
     
     def command_targetfolderdialog(self):
         d = filedialog.askdirectory(parent=self)
@@ -213,6 +214,8 @@ class Window(tk.Tk):
                     self.pb.update()
                     self.subcommand_updatetargetfolder()
             
+            messagebox.showinfo(title='Processes Finished', message='Process Finished with ' + str(len(self.errors)) + ' Errors')
+            
     def validationbox(self, message):
         '''Show validation messagebox
 
@@ -236,3 +239,11 @@ class Window(tk.Tk):
         self.sourcefilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
         for f in self.sourcefiles:
             self.sourcefilestextbox.insert(END,f+'\n')
+
+    def command_sourcetypecombochange(self,event):
+        if self.sourcefolder_entry.get() != '':
+            self.subcommand_updatesourcefolder()
+    
+    def command_targettypecombochange(self,event):
+        if self.targetfolder_entry.get() != '':
+            self.subcommand_updatetargetfolder()
