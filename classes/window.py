@@ -17,6 +17,10 @@ from classes.extenions import Extensions
 #TODO - dialogbox when finished with errors / or errors panel on may screen
 #DONE - convert button validation if all variables are set for it to work or dialogbox
 #TODO - add icons to buttons
+#TODO - fix comments
+#DONE - remove blank lines from error - at least from GUI
+#TODO - update target folder files after each run
+
 
 class Window(tk.Tk):
     sourcefiles = []
@@ -160,6 +164,8 @@ class Window(tk.Tk):
                 self.targetfilestextbox.insert(END,f+'\n')
 
     def widget_progressbar(self):
+        '''Creates and display the progress bar that is updated by command_convert function
+        '''
         # Status frame
         status_label_widget = ttk.Label(
             self, text="Status:", font=(None, self.entryfontsize))
@@ -168,17 +174,18 @@ class Window(tk.Tk):
         status_labelframe.grid(column=0, row=6, columnspan=2,
                                sticky=tk.EW, padx=10, pady=(20, 10))
         status_labelframe.columnconfigure(1, weight=1)
-        # status_labelframe.columnconfigure(2, weight=30)
 
         self.pb = ttk.Progressbar(
             status_labelframe,
             orient='horizontal',
-            # mode='indeterminate',
             value=0
         )
         self.pb.grid(column=1, row=1, sticky=tk.EW, padx=10, pady=(5, 10))
 
     def command_convert(self):
+        '''Converts the files form source to target folder based on file types selected.
+        it also saves the error logs.
+        '''
 
         # flow control var 
         continueflow = True
@@ -207,15 +214,12 @@ class Window(tk.Tk):
                     imagepath = self.sourcefolder_entry.get() + '/' + image
                     newext = self.extoptions[self.targetfiletype_combo.current()]
                     name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
-                    self.errors.append(self.converter.convert(imagepath,name))
+                    log = self.converter.convert(imagepath,name)
+                    if log != '':
+                        self.errors.append(log)
                     self.pb['value'] = i+1
                     self.pb.update()
             
-            if self.errors != []:
-                self.utils.cprint('Errors:','ERROR')
-                for e in self.errors:
-                    if e != '':
-                        print(e)
 
             #FIXME - This sessions needs to be better coded into functions as it appears 3 times in this class
             # get list of images from folder
@@ -226,6 +230,10 @@ class Window(tk.Tk):
             for f in targetfiles:
                 self.targetfilestextbox.insert(END,f+'\n')
 
-    # Show validation messagebox
     def validationbox(self, message):
+        '''Show validation messagebox
+
+        Args:
+            message (str): message to be displayed in the messagebox
+        '''
         messagebox.showerror(title='Validation Error', message=message,)
