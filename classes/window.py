@@ -19,7 +19,7 @@ from classes.extenions import Extensions
 #TODO - add icons to buttons
 #TODO - fix comments
 #DONE - remove blank lines from error - at least from GUI
-#TODO - update target folder files after each run
+#DONE - update target folder files after each run
 
 
 class Window(tk.Tk):
@@ -141,12 +141,8 @@ class Window(tk.Tk):
             self.sourcefolder_entry.config(state='disabled')
 
             # get list of images from folder
-            lookupext = self.extensions.getextensions(self.extoptions[self.sourcefiletype_combo.current()])
-            self.sourcefiles = self.utils.listdirectory(lookupext,d)
+            self.subcommand_updatesourcefolder()
 
-            self.sourcefilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
-            for f in self.sourcefiles:
-                self.sourcefilestextbox.insert(END,f+'\n')
     
     def command_targetfolderdialog(self):
         d = filedialog.askdirectory(parent=self)
@@ -156,12 +152,8 @@ class Window(tk.Tk):
             self.targetfolder_entry.insert(0,d)
             self.targetfolder_entry.config(state='disabled')
 
-            # get list of images from folder
-            lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
-            targetfiles = self.utils.listdirectory(lookupext,d)
-            self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
-            for f in targetfiles:
-                self.targetfilestextbox.insert(END,f+'\n')
+            # updates target foldere images list
+            self.subcommand_updatetargetfolder()
 
     def widget_progressbar(self):
         '''Creates and display the progress bar that is updated by command_convert function
@@ -219,17 +211,8 @@ class Window(tk.Tk):
                         self.errors.append(log)
                     self.pb['value'] = i+1
                     self.pb.update()
+                    self.subcommand_updatetargetfolder()
             
-
-            #FIXME - This sessions needs to be better coded into functions as it appears 3 times in this class
-            # get list of images from folder
-            d = self.targetfolder_entry.get()
-            lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
-            targetfiles = self.utils.listdirectory(lookupext,d)
-            self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
-            for f in targetfiles:
-                self.targetfilestextbox.insert(END,f+'\n')
-
     def validationbox(self, message):
         '''Show validation messagebox
 
@@ -237,3 +220,19 @@ class Window(tk.Tk):
             message (str): message to be displayed in the messagebox
         '''
         messagebox.showerror(title='Validation Error', message=message,)
+
+    def subcommand_updatetargetfolder(self):
+        d = self.targetfolder_entry.get()
+        lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
+        targetfiles = self.utils.listdirectory(lookupext,d)
+        self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        for f in targetfiles:
+            self.targetfilestextbox.insert(END,f+'\n')
+    
+    def subcommand_updatesourcefolder(self):
+        d = self.sourcefolder_entry.get()
+        lookupext = self.extensions.getextensions(self.extoptions[self.sourcefiletype_combo.current()])
+        self.sourcefiles = self.utils.listdirectory(lookupext,d)
+        self.sourcefilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        for f in self.sourcefiles:
+            self.sourcefilestextbox.insert(END,f+'\n')
