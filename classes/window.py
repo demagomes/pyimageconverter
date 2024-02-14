@@ -8,22 +8,19 @@ from classes.errorlogwindow import ErrorLogWindow
 from classes.utils import Utils
 from classes.extenions import Extensions
 
-#DONE - Update files when combo changes and there is a path set
-#DONE - fix the ... buttons padding
-#TODO - Refactor - Organise this class better, breackdown the functions further where possible and reuse code
-#DONE - Convert the files and update the target files
-#TODO - learn how to unit test GUI if possible
-#DONE - make the path entries disabled for typing
-#DONE - dialogbox when finished with errors / or errors panel on may screen
-#DONE - convert button validation if all variables are set for it to work or dialogbox
-#TODO - add icons to buttons
-#TODO - fix comments
-#DONE - remove blank lines from error - at least from GUI
-#DONE - update target folder files after each run
+
+#TODO - Unit test what is possible from GUI
+
 
 
 class Window(tk.Tk):
+    '''Application Main Window class using tkinter and ttkbootstrap
+
+    Args:
+        tk: Toplevel widget of Tk which represents mostly the main window of an application. It has an associated Tcl interpreter
+    '''
     sourcefiles = []
+    errors = []
 
     def __init__(self):
         super().__init__()
@@ -47,20 +44,20 @@ class Window(tk.Tk):
         # file extension options
         self.extoptions = ['JPEG','PNG','WEBP']
 
-        self.errors = []
+        # self.errors = []
 
 
         self.create_widgets()
 
     def create_widgets(self):
-        # Source and Target Folder panels
+        '''Call function to create and display the window's elements
+        '''
         self.widget_sourcefolder()
         self.widget_targetfolder()
         self.widget_progressbar()
         self.widget_buttons()
 
     def widget_buttons(self):
-
         # Error Logs
         errors_button = ttk.Button(self, text="Errors",command=self.command_errorslog)
         errors_button.grid(column=0, row=7, sticky=tk.W,padx=10, pady=5, ipady=20, ipadx=20)
@@ -69,6 +66,8 @@ class Window(tk.Tk):
         convert_button.grid(column=1, row=7, sticky=tk.E,padx=10, pady=5, ipady=20, ipadx=20)
 
     def command_errorslog(self):
+        '''Calls Error Logs Window
+        '''
         ErrorLogWindow(self.errors)
 
     def widget_sourcefolder(self):
@@ -84,7 +83,6 @@ class Window(tk.Tk):
         self.sourcefiletype_combo.current(0)
         self.sourcefiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
         self.sourcefiletype_combo.bind('<<ComboboxSelected>>',self.command_sourcetypecombochange)
-        
 
         # Path entry
         self.sourcefolder_entry = ttk.Entry(sourcefolder_labelframe,font=(None, self.entryfontsize),state='disabled')
@@ -98,7 +96,6 @@ class Window(tk.Tk):
         self.sourcefilestextbox = scrolledtext.ScrolledText(
             master=sourcefolder_labelframe,
             highlightthickness=1
-
         )
         self.sourcefilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
         default_txt = "Source Folder Content"

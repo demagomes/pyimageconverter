@@ -6,6 +6,11 @@ from tkinter import scrolledtext
 
 
 class ErrorLogWindow(Toplevel):
+    '''Error Log Window Class
+
+    Args:
+        Toplevel: Toplevel widget, the Main window
+    '''
 
     def __init__(self, errors):
         Toplevel.__init__(self)
