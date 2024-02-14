@@ -1,6 +1,7 @@
 from pathlib import Path
 import tkinter as tk
 from tkinter import END, filedialog, scrolledtext, ttk
+from tkinter import messagebox
 from ttkbootstrap import Style
 from classes.converter import Converter
 from classes.utils import Utils
@@ -163,30 +164,53 @@ class Window(tk.Tk):
         self.pb.grid(column=1, row=1, sticky=tk.EW, padx=10, pady=(5, 10))
 
     def command_convert(self):
-        errors = []
-        self.pb['maximum'] = len(self.sourcefiles)
-        self.pb['value'] = 0
-        self.pb.update()
 
-        for i,image in enumerate(self.sourcefiles):
-                imagepath = self.sourcefolder_entry.get() + '/' + image
-                newext = self.extoptions[self.targetfiletype_combo.current()]
-                name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
-                errors.append(self.converter.convert(imagepath,name))
-                self.pb['value'] = i+1
-                self.pb.update()
+        # flow control var 
+        continueflow = True
+
+        # Validate entries and AppInfo Project Location
+        if self.sourcefolder_entry.get() == '':
+            self.validationbox('Please select the Source Folder')
+            continueflow = False
         
-        if errors != []:
-            self.utils.cprint('Errors:','ERROR')
-            for e in errors:
-                if e != '':
-                    print(e)
+        if self.targetfolder_entry.get() == '' and continueflow:
+            self.validationbox('Please select the Target Folder')
+            continueflow = False
 
-        #FIXME - This sessions needs to be better coded into functions as it appears 3 times in this class
-        # get list of images from folder
-        d = self.targetfolder_entry.get()
-        lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
-        targetfiles = self.utils.listdirectory(lookupext,d)
-        self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
-        for f in targetfiles:
-            self.targetfilestextbox.insert(END,f+'\n')
+        if len(self.sourcefiles) == 0 and continueflow:
+            self.validationbox('Source folder doesn\'t have any Image of specified type')
+            continueflow = False
+
+
+        if continueflow:
+            errors = []
+            self.pb['maximum'] = len(self.sourcefiles)
+            self.pb['value'] = 0
+            self.pb.update()
+
+            for i,image in enumerate(self.sourcefiles):
+                    imagepath = self.sourcefolder_entry.get() + '/' + image
+                    newext = self.extoptions[self.targetfiletype_combo.current()]
+                    name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
+                    errors.append(self.converter.convert(imagepath,name))
+                    self.pb['value'] = i+1
+                    self.pb.update()
+            
+            if errors != []:
+                self.utils.cprint('Errors:','ERROR')
+                for e in errors:
+                    if e != '':
+                        print(e)
+
+            #FIXME - This sessions needs to be better coded into functions as it appears 3 times in this class
+            # get list of images from folder
+            d = self.targetfolder_entry.get()
+            lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
+            targetfiles = self.utils.listdirectory(lookupext,d)
+            self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+            for f in targetfiles:
+                self.targetfilestextbox.insert(END,f+'\n')
+
+    # Show validation messagebox
+    def validationbox(self, message):
+        messagebox.showerror(title='Validation Error', message=message,)
