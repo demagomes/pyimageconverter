@@ -4,6 +4,7 @@ from tkinter import END, filedialog, scrolledtext, ttk
 from tkinter import messagebox
 from ttkbootstrap import Style
 from classes.converter import Converter
+from classes.errorlogwindow import ErrorLogWindow
 from classes.utils import Utils
 from classes.extenions import Extensions
 
@@ -14,7 +15,7 @@ from classes.extenions import Extensions
 #TODO - learn how to unit test GUI if possible
 #DONE - make the path entries disabled for typing
 #TODO - dialogbox when finished with errors / or errors panel on may screen
-#TODO - convert button validation if all variables are set for it to work or dialogbox
+#DONE - convert button validation if all variables are set for it to work or dialogbox
 #TODO - add icons to buttons
 
 class Window(tk.Tk):
@@ -42,6 +43,8 @@ class Window(tk.Tk):
         # file extension options
         self.extoptions = ['JPEG','PNG','WEBP']
 
+        self.errors = []
+
 
         self.create_widgets()
 
@@ -53,9 +56,16 @@ class Window(tk.Tk):
         self.widget_buttons()
 
     def widget_buttons(self):
+
+        # Error Logs
+        errors_button = ttk.Button(self, text="Errors",command=self.command_errorslog)
+        errors_button.grid(column=0, row=7, sticky=tk.W,padx=10, pady=5, ipady=20, ipadx=20)
         # Convert
         convert_button = ttk.Button(self, text="Convert",command=self.command_convert)
         convert_button.grid(column=1, row=7, sticky=tk.E,padx=10, pady=5, ipady=20, ipadx=20)
+
+    def command_errorslog(self):
+        ErrorLogWindow(self.errors)
 
     def widget_sourcefolder(self):
         # frame
@@ -188,7 +198,7 @@ class Window(tk.Tk):
 
 
         if continueflow:
-            errors = []
+            
             self.pb['maximum'] = len(self.sourcefiles)
             self.pb['value'] = 0
             self.pb.update()
@@ -197,13 +207,13 @@ class Window(tk.Tk):
                     imagepath = self.sourcefolder_entry.get() + '/' + image
                     newext = self.extoptions[self.targetfiletype_combo.current()]
                     name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
-                    errors.append(self.converter.convert(imagepath,name))
+                    self.errors.append(self.converter.convert(imagepath,name))
                     self.pb['value'] = i+1
                     self.pb.update()
             
-            if errors != []:
+            if self.errors != []:
                 self.utils.cprint('Errors:','ERROR')
-                for e in errors:
+                for e in self.errors:
                     if e != '':
                         print(e)
 
