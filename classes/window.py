@@ -8,13 +8,14 @@ from classes.utils import Utils
 from classes.extenions import Extensions
 
 #DONE - Update files when combo changes and there is a path set
-#TODO - fix the ... buttons padding
-#TODO - Organise this class better, breackdown the functions further where possible and reuse code
+#DONE - fix the ... buttons padding
+#TODO - Refactor - Organise this class better, breackdown the functions further where possible and reuse code
 #DONE - Convert the files and update the target files
 #TODO - learn how to unit test GUI if possible
-#TODO - make the path entries disabled for typing
+#DONE - make the path entries disabled for typing
 #TODO - dialogbox when finished with errors / or errors panel on may screen
 #TODO - convert button validation if all variables are set for it to work or dialogbox
+#TODO - add icons to buttons
 
 class Window(tk.Tk):
     sourcefiles = []
@@ -73,8 +74,10 @@ class Window(tk.Tk):
         # Path entry
         self.sourcefolder_entry = ttk.Entry(sourcefolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.sourcefolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
+
+        # select folder button
         self.sourcefolder_button = ttk.Button(sourcefolder_labelframe, text="...",command=self.command_sourcefolderdialog)
-        self.sourcefolder_button.grid(column=1,row=2,padx=0,pady=(5,10),ipady=2)
+        self.sourcefolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,10),ipady=2)
 
         # Source Folder Content ScrolledText 
         self.sourcefilestextbox = scrolledtext.ScrolledText(
@@ -101,8 +104,10 @@ class Window(tk.Tk):
 
         self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
+
+        # select folder button        
         self.targetfolder_button = ttk.Button(targetfolder_labelframe, text="...",command=self.command_targetfolderdialog)
-        self.targetfolder_button.grid(column=1,row=2,padx=0,pady=(5,10),ipady=2)
+        self.targetfolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,10),ipady=2)
     
         # Target Folder Content ScrolledText 
         self.targetfilestextbox = scrolledtext.ScrolledText(
