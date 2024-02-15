@@ -9,7 +9,7 @@ from classes.utils import Utils
 from classes.extenions import Extensions
 
 
-#TODO - Unit test what is possible from GUI
+#TODO - Refactor the GUI functions so some granular test can be added in the form of unittests
 
 
 
@@ -225,7 +225,7 @@ class Window(tk.Tk):
         d = self.targetfolder_entry.get()
         lookupext = self.extensions.getextensions(self.extoptions[self.targetfiletype_combo.current()])
         targetfiles = self.utils.listdirectory(lookupext,d)
-        self.targetfilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        self.targetfilestextbox.delete('1.0', END)
         for f in targetfiles:
             self.targetfilestextbox.insert(END,f+'\n')
     
@@ -233,7 +233,7 @@ class Window(tk.Tk):
         d = self.sourcefolder_entry.get()
         lookupext = self.extensions.getextensions(self.extoptions[self.sourcefiletype_combo.current()])
         self.sourcefiles = self.utils.listdirectory(lookupext,d)
-        self.sourcefilestextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        self.sourcefilestextbox.delete('1.0', END)
         for f in self.sourcefiles:
             self.sourcefilestextbox.insert(END,f+'\n')
 

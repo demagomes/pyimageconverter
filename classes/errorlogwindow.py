@@ -56,7 +56,7 @@ class ErrorLogWindow(Toplevel):
         )
         self.errorstextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
         
-        self.errorstextbox.delete('1.0', END) #REVIEW - WHy does it need 1.0 when the entry needs just 0, need to understand this parameters.
+        self.errorstextbox.delete('1.0', END)
         for e in self.errors:
             if e != '':
                 self.errorstextbox.insert(END,e+'\n')
