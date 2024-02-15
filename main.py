@@ -1,10 +1,10 @@
 #NOTE - Main script to execute the basic file converter
 import argparse
-import os
 from classes.utils import Utils
 from classes.converter import Converter
 from classes.extenions import Extensions
 from pathlib import Path
+from classes.window import Window
 
 def setarguments():
     '''
@@ -18,48 +18,55 @@ def setarguments():
     parser.add_argument('-f','--file', help='Converts the file defined: -f <File Path and Name>')
     parser.add_argument('-s','--source', help='Source File Type: -s JPEG', choices=['JPEG','PNG','WEBP'],default='JPEG')
     parser.add_argument('-t','--target', help='Target File Type: -s WEBP', choices=['JPEG','PNG','WEBP'],default='WEBP')
+    parser.add_argument('-g','--gui', help='Enables GUI version', action='store_true')
     return parser.parse_args()
 
 if __name__ == '__main__':
 
     args = setarguments()
 
-    # set instances
-    utils = Utils()
-    converter = Converter()
-    extensions = Extensions()
-
-    # set errors list for display after the process is finished
-    errors = []
-
-    # check if file argument is present and decide if run for all files in folder or only 1 file
-    if args.file != None:
-        files = [args.file]
+    if args.gui:
+        #NOTE - GUI version
+        app = Window()
+        app.mainloop()
     else:
-        # pass the extensions list to the list folder function
-        lookupext = extensions.getextensions(args.source)
-        files = utils.listdirectory(lookupext,args.directory)
-    
-    filecount = len(files)
+        #NOTE - Terminal version
+        # set instances
+        utils = Utils()
+        converter = Converter()
+        extensions = Extensions()
 
-    # print header
-    utils.cprint('Python Image Converter','HEADER')
-    utils.cprint('https://github.com/demagomes/pyimageconverter','WHITE')
+        # set errors list for display after the process is finished
+        errors = []
 
-    if filecount == 0:
-        errors.append('No Files Found')
-    else:
-        # Initial call to print 0% progress
-        utils.printProgressBar(0, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        # check if file argument is present and decide if run for all files in folder or only 1 file
+        if args.file != None:
+            files = [args.file]
+        else:
+            # pass the extensions list to the list folder function
+            lookupext = extensions.getextensions(args.source)
+            files = utils.listdirectory(lookupext,args.directory)
+        
+        filecount = len(files)
 
-        for i,image in enumerate(files):
-            name = Path(image).stem+extensions.setextension(args.target)
-            errors.append(converter.convert(image,name))
-            utils.printProgressBar(i + 1, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
+        # print header
+        utils.cprint('Python Image Converter','HEADER')
+        utils.cprint('https://github.com/demagomes/pyimageconverter','WHITE')
 
-    if errors != []:
-        utils.cprint('Errors:','ERROR')
-        for e in errors:
-            if e != '':
-                print(e)
+        if filecount == 0:
+            errors.append('No Files Found')
+        else:
+            # Initial call to print 0% progress
+            utils.printProgressBar(0, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
+
+            for i,image in enumerate(files):
+                name = Path(image).stem+extensions.setextension(args.target)
+                errors.append(converter.convert(image,name))
+                utils.printProgressBar(i + 1, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
+
+        if errors != []:
+            utils.cprint('Errors:','ERROR')
+            for e in errors:
+                if e != '':
+                    print(e)
 
