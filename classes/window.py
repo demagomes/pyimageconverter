@@ -114,12 +114,7 @@ class Window(tk.Tk):
         self.targetfiletype_combo.grid(column=0,columnspan=2,row=1,sticky=tk.EW, padx=(10,10), pady=(5,0))
         self.targetfiletype_combo.bind('<<ComboboxSelected>>',self.command_targettypecombochange)
 
-        # Size Combobox
-        # self.targetfilesize_combo = ttk.Combobox(targetfolder_labelframe,values=self.sizeoptions,state='readonly')
-        # self.targetfilesize_combo.current(3)
-        # self.targetfilesize_combo.grid(column=1,row=1,sticky=tk.W, padx=(10,10), pady=(5,10))
-        # self.targetfilesize_combo.bind('<<ComboboxSelected>>',self.command_targettypecombochange)
-
+        # Path entry
         self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize),state='disabled')
         self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,0))
 
@@ -266,8 +261,6 @@ class Window(tk.Tk):
         self.targetfilesize_50 = ttk.Radiobutton(resizing_labelframe,value=50,text='50%',style='Toolbutton',variable=self.resize)
         self.targetfilesize_75 = ttk.Radiobutton(resizing_labelframe,value=75,text='75%',style='Toolbutton',variable=self.resize)
         self.targetfilesize_100 = ttk.Radiobutton(resizing_labelframe,value=100,text='100%',style='Toolbutton',variable=self.resize)
-        # self.targetfilesize_combo.current(3)
-        #  self.sizeoptions = [25,50,75,100]
         self.targetfilesize_25.grid(column=0, row=1,sticky=tk.EW, padx=(5,0), pady=(5,10))
         self.targetfilesize_50.grid(column=1, row=1,sticky=tk.EW, padx=(1,0), pady=(5,10))
         self.targetfilesize_75.grid(column=2, row=1,sticky=tk.EW, padx=(1,0), pady=(5,10))
