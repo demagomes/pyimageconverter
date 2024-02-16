@@ -43,8 +43,9 @@ class Window(tk.Tk):
 
         # file extension options
         self.extoptions = ['JPEG','PNG','WEBP']
+       
 
-        # self.errors = []
+        self.resize = tk.IntVar(value=100)
 
 
         self.create_widgets()
@@ -54,6 +55,7 @@ class Window(tk.Tk):
         '''
         self.widget_sourcefolder()
         self.widget_targetfolder()
+        self.widget_imageresizing()
         self.widget_progressbar()
         self.widget_buttons()
 
@@ -74,30 +76,27 @@ class Window(tk.Tk):
         # frame
         sourcefolder_label_widget = ttk.Label(self, text="Source Folder", font=(None, self.entryfontsize))
         sourcefolder_labelframe = ttk.LabelFrame(self, labelwidget=sourcefolder_label_widget)
-        sourcefolder_labelframe.grid(column=0, row=1, sticky=tk.EW, padx=10, pady=(20, 10))
+        sourcefolder_labelframe.grid(column=0, row=1, sticky=tk.EW, padx=10)
         sourcefolder_labelframe.columnconfigure(0, weight=20)
         sourcefolder_labelframe.columnconfigure(1, weight=1)
         
         # File type combobox
         self.sourcefiletype_combo = ttk.Combobox(sourcefolder_labelframe,values=self.extoptions,state='readonly')
         self.sourcefiletype_combo.current(0)
-        self.sourcefiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
+        self.sourcefiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,0))
         self.sourcefiletype_combo.bind('<<ComboboxSelected>>',self.command_sourcetypecombochange)
 
         # Path entry
         self.sourcefolder_entry = ttk.Entry(sourcefolder_labelframe,font=(None, self.entryfontsize),state='disabled')
-        self.sourcefolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
+        self.sourcefolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,0))
 
         # select folder button
         self.sourcefolder_button = ttk.Button(sourcefolder_labelframe, text="...",command=self.command_sourcefolderdialog)
-        self.sourcefolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,10),ipady=2)
+        self.sourcefolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,0),ipady=2)
 
         # Source Folder Content ScrolledText 
-        self.sourcefilestextbox = scrolledtext.ScrolledText(
-            master=sourcefolder_labelframe,
-            highlightthickness=1
-        )
-        self.sourcefilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
+        self.sourcefilestextbox = scrolledtext.ScrolledText(master=sourcefolder_labelframe,highlightthickness=1)
+        self.sourcefilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,5))
         default_txt = "Source Folder Content"
         self.sourcefilestextbox.insert(END, default_txt)
 
@@ -105,29 +104,35 @@ class Window(tk.Tk):
         # frame
         targetfolder_label_widget = ttk.Label(self, text="Target Folder", font=(None, self.entryfontsize))
         targetfolder_labelframe = ttk.LabelFrame(self, labelwidget=targetfolder_label_widget)
-        targetfolder_labelframe.grid(column=1, row=1, sticky=tk.EW, padx=10, pady=(20, 10))
+        targetfolder_labelframe.grid(column=1, row=1, sticky=tk.EW, padx=10)
         targetfolder_labelframe.columnconfigure(0, weight=20)
         targetfolder_labelframe.columnconfigure(1, weight=1)
 
         # File type combobox
         self.targetfiletype_combo = ttk.Combobox(targetfolder_labelframe,values=self.extoptions,state='readonly')
         self.targetfiletype_combo.current(2)
-        self.targetfiletype_combo.grid(column=0,row=1,columnspan=2,sticky=tk.EW, padx=(10,10), pady=(5,10))
+        self.targetfiletype_combo.grid(column=0,columnspan=2,row=1,sticky=tk.EW, padx=(10,10), pady=(5,0))
         self.targetfiletype_combo.bind('<<ComboboxSelected>>',self.command_targettypecombochange)
 
+        # Size Combobox
+        # self.targetfilesize_combo = ttk.Combobox(targetfolder_labelframe,values=self.sizeoptions,state='readonly')
+        # self.targetfilesize_combo.current(3)
+        # self.targetfilesize_combo.grid(column=1,row=1,sticky=tk.W, padx=(10,10), pady=(5,10))
+        # self.targetfilesize_combo.bind('<<ComboboxSelected>>',self.command_targettypecombochange)
+
         self.targetfolder_entry = ttk.Entry(targetfolder_labelframe,font=(None, self.entryfontsize),state='disabled')
-        self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,10))
+        self.targetfolder_entry.grid(column=0, row=2, sticky=tk.EW, padx=(10,0), pady=(5,0))
 
         # select folder button        
         self.targetfolder_button = ttk.Button(targetfolder_labelframe, text="...",command=self.command_targetfolderdialog)
-        self.targetfolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,10),ipady=2)
+        self.targetfolder_button.grid(column=1,row=2,padx=(0,10),pady=(5,0),ipady=2)
     
         # Target Folder Content ScrolledText 
         self.targetfilestextbox = scrolledtext.ScrolledText(
             master=targetfolder_labelframe,
             highlightthickness=1
         )
-        self.targetfilestextbox.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,10))
+        self.targetfilestextbox.grid(column=0, row=4, columnspan=2,sticky=tk.EW, padx=(10,0), pady=(5,5))
         default_txt = "Target Folder Content"
         self.targetfilestextbox.insert(END, default_txt)
         
@@ -157,12 +162,9 @@ class Window(tk.Tk):
         '''Creates and display the progress bar that is updated by command_convert function
         '''
         # Status frame
-        status_label_widget = ttk.Label(
-            self, text="Status:", font=(None, self.entryfontsize))
-        status_labelframe = ttk.LabelFrame(
-            self, labelwidget=status_label_widget)
-        status_labelframe.grid(column=0, row=6, columnspan=2,
-                               sticky=tk.EW, padx=10, pady=(20, 10))
+        status_label_widget = ttk.Label(self, text="Status:", font=(None, self.entryfontsize))
+        status_labelframe = ttk.LabelFrame(self, labelwidget=status_label_widget)
+        status_labelframe.grid(column=0, row=6, columnspan=2,sticky=tk.EW, padx=10, pady=(0, 5))
         status_labelframe.columnconfigure(1, weight=1)
 
         self.pb = ttk.Progressbar(
@@ -204,7 +206,7 @@ class Window(tk.Tk):
                     imagepath = self.sourcefolder_entry.get() + '/' + image
                     newext = self.extoptions[self.targetfiletype_combo.current()]
                     name = self.targetfolder_entry.get() + '/' + Path(image).stem+self.extensions.setextension(newext)
-                    log = self.converter.convert(imagepath,name)
+                    log = self.converter.convert(imagepath,name,int(self.resize.get()))
                     if log != '':
                         self.errors.append(log)
                     self.pb['value'] = i+1
@@ -244,3 +246,30 @@ class Window(tk.Tk):
     def command_targettypecombochange(self,event):
         if self.targetfolder_entry.get() != '':
             self.subcommand_updatetargetfolder()
+
+    def widget_imageresizing(self):
+        '''Creates and display the the resizing options
+        '''
+        # Status frame
+        resizing_label_widget = ttk.Label(
+            self, text="Resizing Options (100% doesn\'t resize the image, the other options do):", font=(None, self.entryfontsize))
+        resizing_labelframe = ttk.LabelFrame(
+            self, labelwidget=resizing_label_widget)
+        resizing_labelframe.grid(column=0, row=5, columnspan=2,sticky=tk.EW, padx=10, pady=(5, 5))
+        resizing_labelframe.columnconfigure(0, weight=1)
+        resizing_labelframe.columnconfigure(1, weight=1)
+        resizing_labelframe.columnconfigure(2, weight=1)
+        resizing_labelframe.columnconfigure(3, weight=1)
+
+        # Size Combobox
+        self.targetfilesize_25 = ttk.Radiobutton(resizing_labelframe,value=25,text='25%',style='Toolbutton',variable=self.resize)
+        self.targetfilesize_50 = ttk.Radiobutton(resizing_labelframe,value=50,text='50%',style='Toolbutton',variable=self.resize)
+        self.targetfilesize_75 = ttk.Radiobutton(resizing_labelframe,value=75,text='75%',style='Toolbutton',variable=self.resize)
+        self.targetfilesize_100 = ttk.Radiobutton(resizing_labelframe,value=100,text='100%',style='Toolbutton',variable=self.resize)
+        # self.targetfilesize_combo.current(3)
+        #  self.sizeoptions = [25,50,75,100]
+        self.targetfilesize_25.grid(column=0, row=1,sticky=tk.EW, padx=(5,0), pady=(5,10))
+        self.targetfilesize_50.grid(column=1, row=1,sticky=tk.EW, padx=(1,0), pady=(5,10))
+        self.targetfilesize_75.grid(column=2, row=1,sticky=tk.EW, padx=(1,0), pady=(5,10))
+        self.targetfilesize_100.grid(column=3, row=1,sticky=tk.EW, padx=(1,5), pady=(5,10))
+
