@@ -5,7 +5,7 @@ class Converter:
     '''
     Converter class containing all image convertion functions
     '''
-    def convert(self,image,newname):
+    def convert(self,image,newname,percentage = 100):
         '''_summary_
 
         Args:
@@ -19,7 +19,16 @@ class Converter:
 
         try:
             im = Image.open(image)
-            im.save(newname)
+
+            if percentage != 100:
+                width = im.size[0]
+                height = im.size[1]
+                size = int((percentage*width)/100),int((percentage*height)/100)
+                newim = im.resize(size)
+                newim.save(newname)
+            else:
+                im.save(newname)
+
         except UnidentifiedImageError:
             response = 'Cannot Identify File Format: '+image
         except FileNotFoundError:
