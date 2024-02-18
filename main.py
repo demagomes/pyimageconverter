@@ -18,7 +18,9 @@ def setarguments():
     parser.add_argument('-f','--file', help='Converts the file defined: -f <File Path and Name>')
     parser.add_argument('-s','--source', help='Source File Type: -s JPEG', choices=['JPEG','PNG','WEBP'],default='JPEG')
     parser.add_argument('-t','--target', help='Target File Type: -s WEBP', choices=['JPEG','PNG','WEBP'],default='WEBP')
+    parser.add_argument('-r','--resize', help='Resizes Image to specified percentage', type=int,choices=[25,50,75,100],default=100)
     parser.add_argument('-g','--gui', help='Enables GUI version', action='store_true')
+   
     return parser.parse_args()
 
 if __name__ == '__main__':
@@ -61,7 +63,7 @@ if __name__ == '__main__':
 
             for i,image in enumerate(files):
                 name = Path(image).stem+extensions.setextension(args.target)
-                errors.append(converter.convert(image,name))
+                errors.append(converter.convert(image,name,args.resize))
                 utils.printProgressBar(i + 1, filecount, prefix = 'Progress:', suffix = 'Complete', length = 50)
 
         if errors != []:

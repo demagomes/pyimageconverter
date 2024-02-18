@@ -2,6 +2,7 @@
 A simple Python console and GUI application for image conversion
 
 In this version it can convert images between PNG,JPEG and WEBP formats.
+The converted images can also be resized.
 
 To use the GUI version, add -g to the command line.
 
@@ -17,7 +18,7 @@ To use the GUI version, add -g to the command line.
 ```
 python3 main.py -h
 
-usage: main.py [-h] [-d DIRECTORY] [-f FILE] [-s {JPEG,PNG,WEBP}] [-t {JPEG,PNG,WEBP}] [-g]
+usage: main.py [-h] [-d DIRECTORY] [-f FILE] [-s {JPEG,PNG,WEBP}] [-t {JPEG,PNG,WEBP}] [-r {25,50,75,100}] [-g]
 
 options:
   -h, --help            show this help message and exit
@@ -28,6 +29,8 @@ options:
                         Source File Type: -s JPEG
   -t {JPEG,PNG,WEBP}, --target {JPEG,PNG,WEBP}
                         Target File Type: -s WEBP
+  -r {25,50,75,100}, --resize {25,50,75,100}
+                        Resizes Image to specified percentage
   -g, --gui             Enables GUI version
 ```
 
@@ -47,10 +50,21 @@ Errors:
 python3 main.py -s JPEG -t PNG
 ```
 
-### Convert oen specif JPEG file to PNG
+### Convert a specif JPEG file to PNG
 ```
 python3 main.py -f IMG_1802.jpeg -t PNG
 ```
+
+### Resize all JPEG files to 25% of its original size and convert them to WEBP 
+```
+python main.py -r 25
+```
+
+### Resize a specif JPEG file to 25% of its original size Convert the file to PNG
+```
+python3 main.py -f IMG_1802.jpeg -t PNG -r 75
+```
+
 
 ## GUI
 
