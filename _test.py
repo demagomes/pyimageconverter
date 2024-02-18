@@ -3,6 +3,7 @@ import pytest
 from classes.converter import Converter
 from classes.utils import Utils
 from classes.extenions import Extensions
+from PIL import Image
 
 @pytest.fixture
 def getconverterinstance():
@@ -29,6 +30,25 @@ def test_convertimage(getconverterinstance):
 
     # asserts the new webpfile exists
     assert os.path.exists('IMG_1723.webp') == True
+
+    # delete the new file
+    os.remove('IMG_1723.webp')
+
+def test_convertresizeimage(getconverterinstance):
+    '''Tests resizing it to 25% and convertion to webp 
+
+    Args:
+        getconverterinstance (Converter): Converter Class is the main class in the project responsible for image conversion
+    '''
+    # converts the test jpeg image to webp
+    # the image is not included in the repo, change the first argument
+    # to a local image and add it to gitignore
+    getconverterinstance.convert('IMG_1723.jpeg','IMG_1723.webp',25)
+
+    # asserts the new webpfile exists
+    assert os.path.exists('IMG_1723.webp') == True
+    newimagesize = Image.open('IMG_1723.webp').size
+    assert newimagesize == (320,240)
 
     # delete the new file
     os.remove('IMG_1723.webp')
